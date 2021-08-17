@@ -15,7 +15,7 @@ namespace Rap_Finands
         public static string reginummer = "4242";
         public static string datafil = "bank.json"; //Her ligger alt data i
         public static List<Konto> konti;
-        public static float belob;
+        
         static void Main(string[] args)
         {
             Console.WriteLine("Henter alt kontodata");
@@ -48,12 +48,13 @@ namespace Rap_Finands
                 Console.WriteLine("0. Afslut");
 
                 Console.Write(">");
-                
-                
-                
-                string valg1 = Console.ReadLine();
-                int valg = int.Parse(valg1+1);
-                
+
+
+
+                int.TryParse(Console.ReadLine(), out int valg);
+
+                //Fjernet +1 fra valg og smidt det hele i en enkelt linje.
+
                 switch (valg) {
                     case 1:
                         dos_opretKonto();
@@ -94,11 +95,12 @@ namespace Rap_Finands
         }
         static void dos_opretTransaktion(Konto k) 
         {
+            //Rename Variables
             Console.Write("Tekst: ");
-            string tekst = Console.ReadLine();
+            string text = Console.ReadLine();
             Console.Write("Beløb: ");
             float amount = float.Parse(Console.ReadLine());
-            if (GemTrans(k,tekst,amount)) {
+            if (GemTrans(k,text,amount)) {
                 Console.WriteLine("Transkationen blev gemt. Ny saldo på kontoen: "+findSaldo(k));
                 gem();
             } else
@@ -155,7 +157,7 @@ namespace Rap_Finands
             if (saldo + beløb < 0) return false;
             var t = new Transaktion();
             t.tekst = tekst;
-            t.amount = belob;
+            t.amount = beløb;
             t.saldo = t.amount + saldo;
             t.dato = DateTime.Now;
             
@@ -168,6 +170,7 @@ namespace Rap_Finands
             foreach(var t in k.transaktioner) {
                 if (t.dato > senesteDato) {
                     senesteDato = t.dato;
+                    
                     seneste = t;
                 }
             }
